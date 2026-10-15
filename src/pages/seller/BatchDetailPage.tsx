@@ -8,6 +8,7 @@ import { QRCode } from "@/components/common/QRCode";
 import { buildTraceUrl } from "@/lib/trace";
 import { formatDate } from "@/lib/utils";
 import { Plus, Download, Printer, X, Loader2 } from "lucide-react";
+import { PrintStickerModal } from "@/components/common/PrintStickerModal";
 
 
 export default function BatchDetailPage() {
@@ -23,6 +24,7 @@ export default function BatchDetailPage() {
     const [image, setImage] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState("");
+    const [showPrintModal, setShowPrintModal] = useState(false);
 
     if (loading) return <p className="text-muted-foreground">Đang tải...</p>;
     if (!batch) return <p className="text-muted-foreground">Không tìm thấy lô hàng.</p>;
@@ -189,8 +191,20 @@ export default function BatchDetailPage() {
                             </div>
                             <div className="font-mono text-xs mt-2">{batch.barcode}</div>
                             <div className="mt-4 flex gap-2">
-                                <button className="flex-1 border rounded-lg py-2 text-sm flex items-center justify-center gap-1"><Download className="w-4 h-4" /> Tải</button>
-                                <button className="flex-1 border rounded-lg py-2 text-sm flex items-center justify-center gap-1"><Printer className="w-4 h-4" /> In tem</button>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPrintModal(true)}
+                                    className="flex-1 border border-border rounded-lg py-2 text-sm flex items-center justify-center gap-1.5 hover:bg-muted transition"
+                                >
+                                    <Download className="w-4 h-4" /> Tải QR
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPrintModal(true)}
+                                    className="flex-1 bg-primary text-primary-foreground rounded-lg py-2 text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-primary/90 transition shadow-sm"
+                                >
+                                    <Printer className="w-4 h-4" /> In tem nhãn
+                                </button>
                             </div>
                         </>
                     ) : (
@@ -202,6 +216,15 @@ export default function BatchDetailPage() {
                     )}
                 </div>
             </aside>
+
+            {/* Modal In tem nhãn QR dán bao bì */}
+            {batch && (
+                <PrintStickerModal
+                    isOpen={showPrintModal}
+                    onClose={() => setShowPrintModal(false)}
+                    batch={batch}
+                />
+            )}
         </div>
     );
 }
