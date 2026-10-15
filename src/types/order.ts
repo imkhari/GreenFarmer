@@ -24,6 +24,8 @@ export interface OrderDetail {
     quantity: number;
     price: number;
     product_name?: string;
+    product_id?: number;
+    barcode?: string;
     image?: string;
     farm_name?: string;
     batch_code?: string;
