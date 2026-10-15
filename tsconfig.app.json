@@ -7,7 +7,6 @@
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
@@ -33,5 +32,6 @@
 
 
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/mocks"]
 }
