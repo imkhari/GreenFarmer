@@ -53,7 +53,19 @@ export default function CheckoutPage() {
 
             if (pay === "VNPay") {
                 const { paymentUrl } = await paymentService.createVnpayUrl(response.orderId);
-                window.location.href = paymentUrl; // chuyển hẳn sang trang VNPay
+                window.location.href = paymentUrl;
+                return;
+            }
+
+            if (pay === "Momo") {
+                const { paymentUrl } = await paymentService.createMomoUrl(response.orderId);
+                window.location.href = paymentUrl;
+                return;
+            }
+
+            if (pay === "ZaloPay") {
+                const { paymentUrl } = await paymentService.createZaloPayUrl(response.orderId);
+                window.location.href = paymentUrl;
                 return;
             }
 
@@ -134,29 +146,46 @@ export default function CheckoutPage() {
                             Phương thức thanh toán
                         </h2>
 
-                        <div className="space-y-2">
-                            <label className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer ${pay === "COD" ? "border-primary bg-primary/5" : ""}`}>
+                        <div className="space-y-2.5">
+                            {/* COD */}
+                            <label className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition ${pay === "COD" ? "border-primary bg-primary/5 shadow-xs" : "hover:bg-muted/40"}`}>
                                 <input type="radio" name="pay" value="COD" checked={pay === "COD"} onChange={() => setPay("COD")} className="accent-primary" />
                                 <CreditCard className="w-4 h-4 text-muted-foreground" />
-                                Thanh toán khi nhận hàng (COD)
+                                <div className="flex-1">
+                                    <div className="font-medium text-sm">Thanh toán khi nhận hàng (COD)</div>
+                                    <div className="text-xs text-muted-foreground">Thanh toán tiền mặt cho shipper khi nhận nông sản</div>
+                                </div>
                             </label>
 
-                            <label className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer ${pay === "VNPay" ? "border-primary bg-primary/5" : ""}`}>
+                            {/* VNPay */}
+                            <label className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition ${pay === "VNPay" ? "border-primary bg-primary/5 shadow-xs" : "hover:bg-muted/40"}`}>
                                 <input type="radio" name="pay" value="VNPay" checked={pay === "VNPay"} onChange={() => setPay("VNPay")} className="accent-primary" />
-                                <CreditCard className="w-4 h-4 text-muted-foreground" />
-                                VNPay (ATM / Thẻ quốc tế / QR)
+                                <div className="w-5 h-5 rounded bg-blue-600 text-white font-bold text-[9px] flex items-center justify-center shrink-0">VNP</div>
+                                <div className="flex-1">
+                                    <div className="font-medium text-sm">Cổng thanh toán VNPAY</div>
+                                    <div className="text-xs text-muted-foreground">Quét mã VNPAY-QR, Thẻ ATM nội địa, Thẻ quốc tế</div>
+                                </div>
                             </label>
 
-                            {[
-                                { v: "banking", l: "Chuyển khoản ngân hàng" },
-                                { v: "momo", l: "Ví MoMo" },
-                            ].map((o) => (
-                                <label key={o.v} className="flex items-center gap-3 p-3 rounded-xl border cursor-pointer opacity-50">
-                                    <input type="radio" disabled className="accent-primary" />
-                                    <CreditCard className="w-4 h-4 text-muted-foreground" />
-                                    {o.l}
-                                </label>
-                            ))}
+                            {/* MoMo */}
+                            <label className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition ${pay === "Momo" ? "border-primary bg-primary/5 shadow-xs" : "hover:bg-muted/40"}`}>
+                                <input type="radio" name="pay" value="Momo" checked={pay === "Momo"} onChange={() => setPay("Momo")} className="accent-primary" />
+                                <div className="w-5 h-5 rounded bg-pink-600 text-white font-bold text-[8px] flex items-center justify-center shrink-0">MoMo</div>
+                                <div className="flex-1">
+                                    <div className="font-medium text-sm">Ví điện tử MoMo</div>
+                                    <div className="text-xs text-muted-foreground">Thanh toán nhanh qua ví điện tử MoMo Sandbox</div>
+                                </div>
+                            </label>
+
+                            {/* ZaloPay */}
+                            <label className={`flex items-center gap-3 p-3.5 rounded-xl border cursor-pointer transition ${pay === "ZaloPay" ? "border-primary bg-primary/5 shadow-xs" : "hover:bg-muted/40"}`}>
+                                <input type="radio" name="pay" value="ZaloPay" checked={pay === "ZaloPay"} onChange={() => setPay("ZaloPay")} className="accent-primary" />
+                                <div className="w-5 h-5 rounded bg-sky-500 text-white font-bold text-[8px] flex items-center justify-center shrink-0">Zalo</div>
+                                <div className="flex-1">
+                                    <div className="font-medium text-sm">Ví điện tử ZaloPay</div>
+                                    <div className="text-xs text-muted-foreground">Thanh toán tức thì qua ví ZaloPay Sandbox</div>
+                                </div>
+                            </label>
                         </div>
                     </div>
                 </div>

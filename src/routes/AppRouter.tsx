@@ -54,6 +54,8 @@ export default function AppRouter() {
                     <Route path="/orders/:id" element={<OrderDetailPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/payment/vnpay/return" element={<PaymentResultPage />} />
+                    <Route path="/payment/momo/return" element={<PaymentResultPage />} />
+                    <Route path="/payment/zalopay/return" element={<PaymentResultPage />} />
                 </Route>
 
                 <Route element={<ProtectedRoute allow={["seller"]} />}>
