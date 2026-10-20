@@ -6,6 +6,8 @@
   <img src="https://img.shields.io/badge/TypeScript-6.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/VNPay-Sandbox-005BAA?style=for-the-badge&logo=vnpay&logoColor=white" alt="VNPay" />
+  <img src="https://img.shields.io/badge/MoMo-Sandbox-D82D8B?style=for-the-badge&logo=momo&logoColor=white" alt="MoMo" />
+  <img src="https://img.shields.io/badge/ZaloPay-Sandbox-008FE5?style=for-the-badge&logo=zalopay&logoColor=white" alt="ZaloPay" />
 </p>
 
 ---
@@ -14,7 +16,7 @@
 
 **GreenFarmer Frontend** là giao diện người dùng (Single Page Application - SPA) hiện đại, trực quan, được xây dựng với **React 19**, **Vite** và **Tailwind CSS v4**. Dự án đóng vai trò cầu nối thông tin giữa các bên tham gia chuỗi cung ứng nông sản: từ Nông trại sản xuất, Người tiêu dùng cho đến Quản trị viên sàn thương mại điện tử.
 
-Hệ thống giải quyết bài toán cốt lõi: **"Minh bạch hóa nguồn gốc nông sản"** bằng cách liên kết chặt chẽ giữa thương mại điện tử và truy xuất nhật ký canh tác thực tế.
+Hệ thống giải quyết bài toán cốt lõi: **"Minh bạch hóa nguồn gốc nông sản"** bằng cách liên kết chặt chẽ giữa thương mại điện tử, đa cổng thanh toán điện tử và truy xuất nhật ký canh tác thực tế.
 
 ---
 
@@ -23,7 +25,12 @@ Hệ thống giải quyết bài toán cốt lõi: **"Minh bạch hóa nguồn g
 ### 1. Phân hệ Người tiêu dùng (Buyer)
 * **Khám phá nông sản:** Duyệt danh mục rau củ quả theo mùa, lọc theo tiêu chuẩn chất lượng (VietGAP, GlobalGAP, Organic).
 * **Truy xuất nguồn gốc bằng Camera thực tế:** Tích hợp bộ quét mã QR trực tiếp qua camera máy tính/điện thoại (`html5-qrcode`) để tra cứu nguồn gốc và nhật ký canh tác của lô hàng.
-* **Quy trình Mua hàng & Thanh toán:** Giỏ hàng, địa chỉ giao hàng, tích hợp cổng thanh toán trực tuyến **VNPay Sandbox**.
+* **Hệ thống Đa cổng thanh toán (Multi-Payment Gateway):**
+  * 💵 **Thanh toán khi nhận hàng (COD):** Trả tiền mặt cho shipper.
+  * 💳 **Cổng thanh toán VNPay Sandbox:** Thẻ ATM nội địa, Thẻ quốc tế Visa/Mastercard, VNPAY-QR.
+  * 💖 **Ví điện tử MoMo Sandbox:** Quét mã QR hoặc đăng nhập ví MoMo.
+  * 💙 **Ví điện tử ZaloPay Sandbox:** Thanh toán tức thì qua ví ZaloPay.
+  * *Tự động xác thực giao dịch và cập nhật trạng thái đơn hàng sang `Paid` (Đã thanh toán) sau khi thanh toán thành công.*
 * **Đánh giá & Phản hồi (Review Loop):** Modal đánh giá chất lượng sản phẩm (1-5 sao kèm nhận xét) ngay sau khi nhận hàng thành công (`Completed`).
 
 ### 2. Phân hệ Nông dân / Người bán (Seller)
@@ -45,6 +52,7 @@ Hệ thống giải quyết bài toán cốt lõi: **"Minh bạch hóa nguồn g
 
 * **Core:** React 19, TypeScript 6.0, Vite 8 (Tốc độ khởi động và HMR cực nhanh).
 * **Styling & UI:** Tailwind CSS v4, Lucide React (Bộ icon vector chuẩn), clsx, tailwind-merge.
+* **Cổng thanh toán:** Tích hợp đa cổng VNPay Sandbox, MoMo Sandbox, ZaloPay Sandbox với trang xác thực callback tự động.
 * **Mã vạch & QR Code:** `qrcode.react` (Sinh mã vector SVG/Canvas), `html5-qrcode` (Quét mã qua Camera).
 * **Quản lý biểu mẫu:** `react-hook-form` kết hợp `zod` xác thực dữ liệu.
 * **Điều hướng & Định tuyến:** `react-router-dom` v7 với cấu trúc Route bảo vệ theo Role (Guard).
@@ -64,9 +72,9 @@ greenFarmFE/
 │   ├── pages/              # Các màn hình chức năng chính
 │   │   ├── admin/          # Quản lý người dùng, duyệt nông trại & lô hàng
 │   │   ├── seller/         # Quản lý lô hàng, nhật ký canh tác, in tem QR
-│   │   ├── buyer/          # Giỏ hàng, lịch sử đơn hàng, trang cá nhân
+│   │   ├── buyer/          # Giỏ hàng, thanh toán đa cổng, lịch sử đơn hàng
 │   │   └── public/         # Trang chủ, chi tiết sản phẩm, chi tiết đơn hàng, truy xuất QR
-│   ├── services/           # Gọi API backend (auth, product, batch, order, review)
+│   ├── services/           # Gọi API backend (auth, product, batch, order, review, payment)
 │   ├── types/              # Định nghĩa kiểu dữ liệu TypeScript (User, Order, Batch...)
 │   ├── lib/                # Utilities, cấu hình Axios, hàm định dạng ngày tháng, tiền tệ
 │   ├── App.tsx             # Định tuyến ứng dụng (App Router)
